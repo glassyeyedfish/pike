@@ -5,8 +5,24 @@
 
 #include "util.h"
 
+static int had_custom_error = 0;
+static char errmsg[80];
+
+void 
+util_seterr(const char *msg)
+{
+	had_custom_error = 1;
+	strncpy(errmsg, msg, 79);
+}
+
+void 
+util_reseterr()
+{
+	had_custom_error = 0;
+}
+
 void
-die(const char *fmt, ...)
+util_die(const char *fmt, ...)
 {
 	va_list ap;
 
@@ -16,7 +32,12 @@ die(const char *fmt, ...)
 
 	if (fmt[0] && fmt[strlen(fmt)-1] == ':') {
 		fputc(' ', stderr);
-		perror(NULL);
+		if (had_custom_error) {
+			fputs(errmsg, stderr);
+			fputc('\n', stderr);
+		} else {
+			perror(NULL);
+		}
 	} else {
 		fputc('\n', stderr);
 	}

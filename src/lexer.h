@@ -6,10 +6,12 @@
 #include "str.h"
 
 typedef enum {
+    TOKEN_ID,
     TOKEN_PRINTLN,
     TOKEN_LEFT_PAREN,
     TOKEN_RIGHT_PAREN,
-    TOKEN_STR
+    TOKEN_STR,
+    TOKEN_INVALID
 } token_type_t;
 
 /*
@@ -17,7 +19,7 @@ typedef enum {
  */
 typedef struct {
     token_type_t type;
-    str_t *text;
+    char *text;
 } token_t;
 
 typedef struct {

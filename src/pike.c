@@ -8,23 +8,22 @@
 int 
 main() 
 {
-    // FILE *source_code = fopen("examples/test.pk", "r");
-    // token_vec_t* tokens = token_vec_alloc();
+    /* Get a pointer to the source code. */
+    FILE *source_code = fopen("examples/test.pk", "r");
+    if (source_code == NULL) {
+        util_die("fopen:");
+    }
 
-    // if (source_code == NULL) {
-    //     die("fopen:");
-    // }
+    /* Convert source code into tokens. */
+    token_vec_t* tokens = token_vec_alloc();
+    if (tokenize(tokens, source_code) < 0) {
+        util_die("tokenize:");
+    }
+    token_vec_println(tokens);
 
-    // token_vec_println(tokens);
-    // token_vec_append(tokens);
-    // token_vec_println(tokens);
-
-    // token_vec_free(tokens);
-    // fclose(source_code);
-
-    str_t *str = str_alloc("Hello!");
-    puts(str->chars);
-    str_free(str);
+    /* Clean up and exit. */
+    token_vec_free(tokens);
+    fclose(source_code);
 
     return 0;
 }
