@@ -18,6 +18,7 @@ const (
 	TOKEN_STR
 
 	TOKEN_WS
+	TOKEN_EOF
 )
 
 type Token struct {
@@ -28,19 +29,51 @@ type Token struct {
 	len  int
 }
 
+type LineCol struct {
+	line int
+	col  int
+}
+
 type FindFunc func([]byte) []byte
 
 var find []FindFunc = []FindFunc{
 	regexp.MustCompile("^[(]").Find,
 	regexp.MustCompile("^[)]").Find,
 	regexp.MustCompile("^[\n]").Find,
-	regexp.MustCompile("^[a-zA-Z][a-zA-Z0-9_]*").Find,
-	regexp.MustCompile("^\".*\"").Find,
+
 	regexp.MustCompile("^println").Find,
+
+	regexp.MustCompile("^[a-zA-Z][a-zA-Z0-9_]*").Find,
+
+	regexp.MustCompile("^\".*\"").Find,
+
 	regexp.MustCompile("^[ \t]+").Find,
 }
 
-func Tokenize(buf []byte, lc []LineCol) []Token {
+func GenLineCol(buf []byte) []LineCol {
+	buf_l := len(buf)
+	col := 1
+	line := 1
+	var lc []LineCol
+
+	for buf_i := 0; buf_i < buf_l; buf_i++ {
+		lc = append(lc, LineCol{
+			line: line,
+			col:  col,
+		})
+		if buf[buf_i] == '\n' {
+			col = 1
+			line++
+		} else {
+			col++
+		}
+	}
+
+	return lc
+}
+
+func Tokenize(buf []byte) []Token {
+	lc := GenLineCol(buf)
 	i := 0
 	l := len(lc)
 
@@ -75,6 +108,14 @@ func Tokenize(buf []byte, lc []LineCol) []Token {
 		}
 		suc = false
 	}
+
+	tokens = append(tokens, Token{
+		kind: TOKEN_EOF,
+		text: "",
+		line: -1,
+		col:  -1,
+		len:  -1,
+	})
 
 	return tokens
 }

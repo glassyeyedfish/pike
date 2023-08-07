@@ -32,12 +32,13 @@ func Pike() {
 		log.Fatal(err)
 	}
 
-	// 2. Generate the line-col data for each byte
-	lc := GenLineCol(buf)
+	// 2. Convert the byte buffer into tokens
+	tokens := Tokenize(buf)
 
-	// 3. Convert the byte buffer and line-col data into tokens
-	tokens := Tokenize(buf, lc)
+	// 3. Convert tokens into tree
+	parser := Parser{}
+	trees := parser.Parse(tokens)
 
 	// PrintlnSource(tokens)
-	PrintlnTokens(tokens)
+	fmt.Println(trees)
 }
