@@ -5,9 +5,9 @@ In which I once again try to make a programming language.
 
 | Command | Arguments | Description |
 | --- | --- | --- |
-| e | [SOURCE FILE] [DESTINATION FILE] | Encode hexadecimal numbers in text format to a binary. |
-| d | [SOURCE FILE] [DESTINATION FILE] | Decode a binary into hexadecimal numbers in text format. |
-| r | [BINARY FILE] | Run a binary. |
+| e | [SOURCE] [DESTINATION] | Encode hexadecimal numbers in text format to a binary. |
+| d | [SOURCE] [DESTINATION] | Decode a binary into hexadecimal numbers in text format. |
+| r | [BINARY] | Run a binary. |
 
 ## List of Opcodes
 
