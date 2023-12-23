@@ -31,19 +31,19 @@ encode(const char* src, const char* dest)
             // Convert both digits to a binary number
             char n = 0;
             if ('0' <= first_digit && first_digit <= '9') {
-                n += first_digit - 30;
+                n += first_digit - '0';
             } else if ('A' <= first_digit && first_digit <= 'F') {
-                n += first_digit - 31;
+                n += first_digit - 'A' + 10;
             } else if ('a' <= first_digit && first_digit <= 'f') {
-                n += first_digit - 51;
+                n += first_digit - 'a' + 10;
             }
             n *= 16;
             if ('0' <= c && c <= '9') {
-                n += c - 30;
+                n += c - '0';
             } else if ('A' <= c && c <= 'F') {
-                n += c - 31;
+                n += c - 'A' + 10;
             } else if ('a' <= c && c <= 'f') {
-                n += c - 51;
+                n += c - 'a' + 10;
             }
 
             // Write it to the binary file
